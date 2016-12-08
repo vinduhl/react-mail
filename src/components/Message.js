@@ -1,4 +1,5 @@
 import React from "react";
+import { findMessageById } from "../services/messageService";
 
 export default class Message extends React.Component {
 	constructor( props ) {
@@ -11,12 +12,34 @@ export default class Message extends React.Component {
 		}
 	}
 
+	getMessage(messageId) {
+		const message = findMessageById(messageId);
+		if(message) {
+			this.setState( {
+				name: message.name,
+				email: message.email,
+				content: message.content
+				}
+			);
+		}
+	}
+
+	componentWillMount() {
+		this.getMessage.call(this, this.props.params.messageId);
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		if(nextProps.params.messageId != this.props.params.messageId) {
+			this.getMessage.call(this, nextProps.params.messageId);
+		}
+	}
+
 	render() {
 		return (
 			<div>
-				<h1>{ /* message name */ }</h1>
-				<h3>{ /* message email */ }</h3>
-				<p>{ /* message content */ }</p>
+				<h1>{ this.state.name }</h1>
+				<h3>{ this.state.email }</h3>
+				<p>{ this.state.content }</p>
 			</div>
 		);
 	}

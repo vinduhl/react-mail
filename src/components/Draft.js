@@ -1,6 +1,13 @@
 import React from "react";
+import { browserHistory } from "react-router";
 
 export default class Draft extends React.Component {
+
+	sendMessage(event) {
+		event.preventDefault();
+		browserHistory.push("/inbox");
+	}
+
 	render() {
 		const styles = this.getStyles();
 
@@ -38,7 +45,9 @@ export default class Draft extends React.Component {
 						style={ styles.draft }
 					/>
 
-					<button style={ styles.sendButton }>
+					<button
+						onClick={ this.sendMessage }
+						style={ styles.sendButton }>
 						Send
 					</button>
 				</form>
