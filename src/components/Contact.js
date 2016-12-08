@@ -1,16 +1,51 @@
 import React from "react";
+import { getContactInfo } from "../services/contactsService";
 
 export default class Contact extends React.Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			name: "",
+			company: "",
+			email: "",
+			phone: ""
+		};
+	}
+
+	getContact(contactId) {
+		const contact = getContactInfo(contactId);
+		if(contact) {
+			this.setState( {
+				name: contact.name,
+				company: contact.company,
+				email: contact.email,
+				phone: contact.phone
+			});
+		}
+	}
+
+	componentWillMount() {
+		this.getContact.call(this, this.props.params.contactId);
+	}
+
+	componentWillUpdate(nextProps, nextState) {
+		if(nextProps.params.contactId != this.props.params.contactId) {
+			this.getContact.call(this, nextProps.params.contactId);
+		}
+	}
+
 	render() {
 		const styles = this.getStyles();
 
 		return (
-			<ul style={ styles.contactWrapper }>
-				<li style={ styles.name }>{ this.props.name }</li>
-				<li>Company: { this.props.company }</li>
-				<li>Email: { this.props.email }</li>
-				<li>: Phone #: { this.props.phone }</li>
-			</ul>
+			<div style={ styles.contactWrapper }>
+				<div style={ styles.name }>{ this.state.name }</div>
+				<div>Company: { this.state.company }</div>
+				<div>Email: { this.state.email }</div>
+				<div>Phone #: { this.state.phone }</div>
+			</div>
 		);
 	}
 

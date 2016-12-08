@@ -2,6 +2,11 @@ export function getContacts() {
 	return contacts.slice();
 }
 
+export function getContactInfo(contactId) {
+	const contact = contacts.filter( contact => contact._id === contactId )
+	return contact.length > 0 ? contact[0] : null;
+}
+
 const contacts = [
 	{
 		"_id": "57890ab45e95b346291c3728",
